@@ -1,0 +1,242 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap");
+
+:root {
+  color-scheme: dark;
+  font-family: "Barlow Condensed", "Noto Sans TC", sans-serif;
+  background: #090d12;
+  color: #eef4f3;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #game {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body { background: #090d12; }
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#hud {
+  position: absolute;
+  z-index: 2;
+  inset: 30px 34px auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  pointer-events: none;
+  text-shadow: 0 2px 12px #000;
+}
+
+.hud-block, .hud-center {
+  display: grid;
+  gap: 5px;
+}
+
+.hud-center { text-align: center; }
+.hud-right { text-align: right; }
+.label, .sub-label, .eyebrow, .footnote {
+  color: #8d9da2;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+}
+
+.hud-block strong, .hud-center strong {
+  font-size: 27px;
+  line-height: 1;
+  letter-spacing: .06em;
+}
+
+.health-track {
+  width: 148px;
+  height: 5px;
+  margin-top: 2px;
+  background: #26343a;
+}
+
+#health-fill {
+  width: 100%;
+  height: 100%;
+  background: #71f6c2;
+  transition: width .2s, background .2s;
+}
+
+#crosshair {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+#crosshair::before, #crosshair::after, #crosshair i, #crosshair b {
+  position: absolute;
+  display: block;
+  content: "";
+  background: #d7fff2;
+  box-shadow: 0 0 8px #46f2b1;
+}
+
+#crosshair::before, #crosshair::after {
+  top: 10px;
+  width: 6px;
+  height: 2px;
+}
+
+#crosshair::before { left: 0; }
+#crosshair::after { right: 0; }
+#crosshair i, #crosshair b {
+  left: 10px;
+  width: 2px;
+  height: 6px;
+}
+
+#crosshair i { top: 0; }
+#crosshair b { bottom: 0; }
+
+#game.aiming #crosshair {
+  width: 4px;
+  height: 4px;
+  border: 1px solid #d7fff2;
+  border-radius: 50%;
+}
+
+#game.aiming #crosshair::before,
+#game.aiming #crosshair::after,
+#game.aiming #crosshair i,
+#game.aiming #crosshair b {
+  display: none;
+}
+
+#hit-marker {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  color: white;
+  font: 28px/1 sans-serif;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+#hit-marker.show { animation: hit .16s ease-out; }
+@keyframes hit {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(.6); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
+}
+
+#damage-flash {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: radial-gradient(transparent 42%, #ff435844);
+  opacity: 0;
+  pointer-events: none;
+}
+
+#damage-flash.show { animation: damage .35s ease-out; }
+@keyframes damage { 0% { opacity: .9; } 100% { opacity: 0; } }
+
+.overlay {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(90deg, #080c11e8, #080c119e 55%, #080c11b8),
+              radial-gradient(ellipse at 70% 50%, #12453b55, transparent 55%);
+}
+
+.overlay.hidden { display: none; }
+.panel { width: min(440px, 100%); }
+.eyebrow { color: #72edbd; }
+
+h1 {
+  margin: 18px 0;
+  font-size: clamp(56px, 10vw, 88px);
+  font-weight: 800;
+  line-height: .78;
+  letter-spacing: -.025em;
+}
+
+h1 span { color: #75f0c2; }
+.intro { max-width: 360px; color: #b6c3c4; line-height: 1.8; }
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+  margin: 28px 0;
+  color: #b6c3c4;
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 12px;
+}
+
+kbd {
+  display: inline-block;
+  min-width: 22px;
+  margin-right: 2px;
+  padding: 4px 5px;
+  border: 1px solid #536167;
+  border-radius: 3px;
+  color: #e8f4ef;
+  font: 700 10px "Barlow Condensed", sans-serif;
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  padding: 15px 18px;
+  border: 0;
+  border-radius: 2px;
+  background: #75f0c2;
+  color: #07120f;
+  cursor: pointer;
+  font: 700 15px "Noto Sans TC", sans-serif;
+  transition: background .15s, transform .15s;
+}
+
+button:hover { background: #a0ffda; transform: translateY(-2px); }
+button span { float: right; font-size: 20px; line-height: 18px; }
+.footnote { margin-top: 14px; letter-spacing: .08em; }
+
+#message {
+  position: absolute;
+  z-index: 3;
+  top: 23%;
+  left: 50%;
+  color: #80f5c7;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  opacity: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+#message.show { animation: announce 1.2s ease-out; }
+@keyframes announce {
+  0% { opacity: 0; transform: translate(-50%, 8px); }
+  15%, 70% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; }
+}
+
+@media (max-width: 520px) {
+  #hud { inset: 18px 16px auto; }
+  .health-track { width: 110px; }
+  .hud-block strong, .hud-center strong { font-size: 23px; }
+}
